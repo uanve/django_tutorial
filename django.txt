@@ -1,0 +1,33 @@
+pip install pipenv
+
+mkdir storefront
+cd storefront
+
+# Desktop folder
+pipenv install django
+ 
+pipenv shell
+
+django-admin
+
+django-admin startproject storefront .   #. sets current working directory
+
+python manage.py == django-admin 
+
+python manage.py runserver
+
+#python working environment
+pipenv --venv
+
+#set terminal to VSC
+CTRL+SHIFT+P >> python select interpreter --> path: $pipenv --venv\bin\python
+press +next to powershell to start new terminal
+
+
+python manage.py runserver    #CTRL+C for exit #see URL
+python manage.py startapp playground #creates new app
+
+#add app playground in settings.py of storefront
+
+#debug tool
+https://django-debug-toolbar.readthedocs.io/en/latest/installation.html
