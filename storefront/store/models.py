@@ -1,19 +1,17 @@
 from django.db import models
-from django.db.models.deletion import PROTECT
-from django.db.models.fields import DecimalField
-from django.db.models.fields.related import OneToOneField
 
-
+# Create your models here.
 
 class Promotion(models.Model): #many to many relationships
     description = models.CharField(max_length=255)
     discount = models.FloatField()
 
 
-
 class Collection(models.Model):
     title = models.CharField(max_length=255)
-    featured_product = models.ForeignKey('Product', on_delete=models.SET_NULL, null = True)
+    featured_product = models.ForeignKey('Product', on_delete=models.SET_NULL, null = True,related_name='+')
+
+
 
 class Product(models.Model):
     #sku = models.CharField(max_length=10, primary_key=True)
@@ -35,13 +33,13 @@ class Customer(models.Model):
     MEMBERSHIP_CHOICES = [
         (MEMBERSHIP_BRONZE, 'Bronze'),
         (MEMBERSHIP_SILVER, 'Silver'),
-        (MEMBERSHIP_GOLD, 'Gold'),
+        (MEMBERSHIP_GOLD, 'Gold')
     ]
     first_name = models.CharField(max_length=255) 
     last_name = models.CharField(max_length=255) 
     email = models.EmailField(unique=True) 
     phone = models.CharField(max_length=255)
-    birth_date = models.DateField(auto=True)
+    birth_date = models.DateField(null=True)
     membership = models.CharField(max_length=1, choices=MEMBERSHIP_CHOICES, default=MEMBERSHIP_BRONZE)
 
 class Order(models.Model):
@@ -61,16 +59,16 @@ class Order(models.Model):
 class Address(models.Model):
     street = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
-    #customer = models.OneToOneField(Customer, on_delete=models.CASCADE, primary_key=True) 
+    #customer = models.OneToOneField(Customer, on_delete=models.CASCADE, primary_key=True)   #
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, )
 
 
-
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order,on_delete=PROTECT)
-    product = models.ForeignKey(Product,on_delete=PROTECT)
+    order = models.ForeignKey(Order,on_delete=models.PROTECT)
+    product = models.ForeignKey(Product,on_delete=models.PROTECT)
     quantity = models.PositiveSmallIntegerField()   #if a price item is changed overtime the "old" price of purchase should be stored in OrderItem
     unit_price = models.DecimalField(max_digits=6, decimal_places=2)
+
 
 class Cart(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
