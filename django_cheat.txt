@@ -1,0 +1,108 @@
+#Create aplication named "storefront"
+mkdir storefront
+cd storefront
+
+pipenv install django
+
+code .
+ 
+pipenv shell
+
+django-admin
+
+django-admin startproject storefront .   #. sets current working directory
+
+python manage.py == django-admin 
+
+python manage.py runserver
+
+#python working environment
+pipenv --venv
+
+#set terminal to VSC
+CTRL+SHIFT+P >> python select interpreter --> path: $pipenv --venv\bin\python
+press +next to powershell to start new terminal
+
+
+python manage.py runserver    #CTRL+C for exit #see URL
+
+#CREATE A NEW APP
+python manage.py startapp playground #creates new app
+#add app playground in settings.py of storefront  in INSTALLED_APPS
+
+"""
+migrations folder --> generating databases
+admin 			  --> define how admin interface for this app is going to look like
+apps  			  --> configure the app 
+models 			  --> define the modules. Modules are used to pull data from databases and be presented to user
+test              --> Run unit tests 
+views             --> request handler   request->response
+"""
+
+
+################## INI FUNDAMENTALS ############################
+### First view function   request /playground/hello
+(1) define request in views
+playground > views.py
+from django.http import HttpResponse
+def say_hello(request):
+	return HttpResponse("Hello World")
+(2) map request to URL
+#create urls.py in playground folder
+#playground > urls.py
+from django.urls import path
+from . import views (. current folder)
+
+urlpatterns = [
+	path('/hello/', views.say_hello)
+]
+#storefront > urls.py 
+from django.urls import include
+	path('playground/', include('playground.urls'))
+	
+	
+### Add template
+(1) create template file
+playground > templates > hello.html  (create folder and file)
+<h1>Hello World</h1>
+(2) modify view function
+def say_hello(request):
+    return render(request,'hello.html')
+(2.1) add a str-name mapping
+return render(request,'hello.html',{'name':'Joan'})
+<h1>Hello {{name}}</h1>
+
+#debug tool
+https://django-debug-toolbar.readthedocs.io/en/latest/installation.html
+
+################## FIN FUNDAMENTALS ############################
+
+################## INI Data Model ############################
+#create new apps and edit MODEL (data!!!)
+python manage.py startapp store
+python manage.py startapp tags
+#add app store,tags in settings.py of storefront  in INSTALLED_APPS
+
+#google > django field types
+
+father: customer
+child: address
+
+on_delete:
+CASCADE --> when customer is deleted; address is also deleted
+SET_NULL --> if the address accepts null values; when customer is deleted the customer field set to null
+SET_DEFAULT --> to default value
+PROTECT --> prevent deletion of father before child: customer cannot be deleted without deleting the address
+
+primarey_key = True? django will use customer as ID
+
+#customer can only have 1 address:
+customer = models.OneToOneField(Customer, on_delete=models.CASCADE, primary_key=True)
+
+#customer can have several address
+customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+
+
+
+################## FIN Data Model ############################
+
