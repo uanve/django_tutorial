@@ -106,3 +106,83 @@ customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
 
 ################## FIN Data Model ############################
 
+################## INI Setting up Database #######################
+
+#geenrate data model
+python manage.py makemigrations 
+
+
+#create data model
+python manage.py migrate
+
+
+#revert migration
+(1) python manage.py migrate store 0004
+(2) delete migration file 0005
+(3) revert changes in the code (i.e. in models.py) 
+
+CTRL+SHIFT+P SQLite Open Database to see the databases in CTRL+B menu
+
+settings.py
+
+#predetermined
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+
+#setting up a MySQL database
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'storefront',
+		'HOST': 'localhost',
+		'USER': 'root',
+		'PASSWORD': 'MyPassword'
+    }
+}
+
+
+################## FIN Setting up Database #######################
+
+
+
+################## INI ORM - queries #######################
+#https://docs.djangoproject.com/en/4.0/ref/models/querysets/
+#Django database functions
+
+
+#say_hello function
+(1) import class
+from store.models import Product
+
+#return a query_set object. The query is evaluated when in a for loop (i.e. for product in query_set:)
+Product.objects.
+ - .all() 						select * from product            (query_set)
+ - .get(id = 1) 				select * from product where id=1 (product)
+ - .filter(unit_price__gt=20) 	select * from product where        gt/gte/lt/lte/range=(20,30)
+ - .filter(collection__id=1 ) 	JOIN Product and Collection 
+ - .filter(title__cointains='coffee')   filter strings            icontains/startswith/endswith
+ - .filter(last_update__year=2021)      filter dates              month/day
+ - .filter(description__isnull=True)
+		
+ - .count() 						select count(*) from product table
+
+
+return render( request, {'products': list(query_set)} )
+hello.html > 
+
+#1 result
+{{product}}
+
+#for loop
+<ul>
+	{% for product in products %} <li>{{ product.title }}<\li>  {% endfor %}
+<\ul> 
+
+
+
+
+################## FIN ORM - queries #######################
