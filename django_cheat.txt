@@ -259,10 +259,19 @@ storefront > urls.py >  admin.site.site_header = 'Storefront Admin'
 store > admin.py
 	from . import models
 	admin.site.register(models.Collection)
-modify models.Collection and add a function
+
+modify models.Collection and add a function  #to print the title and also order alphabetically
 def __str__(self) -> str:
         return self.title
 class Meta:
 	ordering = ['title']
+	
+# Customize list page
+# > admin.py
+#google: django ModelAdmin options
+@admin.register(models.Product)
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ['title', 'unit_price']
+	list_editable = ['unit_price']
 
 ################## FIN ADMIN SITE ##########################

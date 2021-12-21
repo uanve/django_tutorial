@@ -10,5 +10,6 @@ from store.models import OrderItem, Product, Customer, Order
 def say_hello(request):
 
     #https://docs.djangoproject.com/en/4.0/ref/models/querysets/
+    #Django database functions
     result = Product.objects.aggregate(count= Count('id'))
     return render(request, 'hello.html', {'name': 'Mosh','result': result})
