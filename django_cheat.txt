@@ -275,3 +275,16 @@ class ProductAdmin(admin.ModelAdmin):
 	list_editable = ['unit_price']
 
 ################## FIN ADMIN SITE ##########################
+
+################## INI RESTful APIs #########################
+
+install: 
+	(1) pipenv install djangorestframework
+	(2) INSTALLED_APPS add rest_framework before our apps
+- POST: Creating a product
+- PULL : Updating all properties of a product
+- PATCH : Updating some properties of a product
+- DELETE: Delete a product
+
+
+################## FIN RESTful APIs #########################
