@@ -6,13 +6,16 @@ from decimal import Decimal
 class CollectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Collection
-        fields = ['id','title']
+        fields = ['id','title','products_count']
+    products_count = serializers.IntegerField()
+
     
+
 
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ['id','title','unit_price','price_with_tax','collection']
+        fields = ['id','title','description','slug','inventory','unit_price','price_with_tax','collection']
     price_with_tax = serializers.SerializerMethodField(method_name = 'calculate_tax')
        
 
@@ -24,4 +27,5 @@ class ProductSerializer(serializers.ModelSerializer):
     #         return serializers.ValidationError('Passwords do not match')
     #     return data
 
+    
 
